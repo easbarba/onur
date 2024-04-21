@@ -21,13 +21,22 @@ BUILDDIR = ./build
 
 # ------------------------------------ TASKS
 
-# .PHONY: deps
-# deps:
-
 .PHONY: all
-all:
-	cmake -B <build tree> -S <source tree>
-	cmake --build <build tree>
+all: deps
+	meson compile -C $(BUILDDIR)
+
+.PHONY: deps
+deps:
+	CC=gcc meson setup build --wipe
+
+.PHONY: dev
+dev:
+	meson compile -C $(BUILDDIR)
+
+# .PHONY: all
+# all:
+# 	cmake -B ${BUILDDIR} -S .
+# 	cmake --build ${BUILDDIR}
 
 # .PHONY: dev
 # dev:
@@ -67,9 +76,13 @@ leaks:
 
 # ------------------------------------ ACTIONS
 
+.PHONY: default
+default:
+	$(BUILDDIR)/$(NAME)
+
 .PHONY: usage
 usage:
-	$(BUILDDIR)/$(NAME) help
+	$(BUILDDIR)/$(NAME) --help
 
 .PHONY: grab
 grab:
