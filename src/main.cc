@@ -13,11 +13,12 @@
  * along with Onur. If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <string>
+
 #include "CLI/Option.hpp"
 #include <CLI/CLI.hpp>
-#include <iostream>
-#include <ostream>
-#include <string>
+
+#include "../include/commands.h"
 
 auto main(int argc, char *argv[]) -> int {
 
@@ -28,19 +29,19 @@ auto main(int argc, char *argv[]) -> int {
   app.add_option("-f,--file", filename, "A help string");
   app.set_version_flag("--version", std::string("0.0.1"));
 
-  CLI::App *grab = app.add_subcommand("grab", "grab all projects");
-  CLI::App *backup =
+  CLI::App *grab_cmd = app.add_subcommand("grab", "grab all projects");
+  CLI::App *backup_cmd =
       app.add_subcommand("backup", "compress all selected projects");
   app.require_subcommand();
 
   CLI11_PARSE(app, argc, argv);
 
-  if (*grab) {
-    std::cout << "Grabbing!" << std::endl;
+  if (*grab_cmd) {
+    grab();
   }
 
-  if (*backup) {
-    std::cout << "Backing up" << std::endl;
+  if (*backup_cmd) {
+    backup();
   }
 
   return 0;

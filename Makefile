@@ -27,7 +27,7 @@ all: deps
 
 .PHONY: deps
 deps:
-	CC=gcc meson setup build --wipe
+	CC=g++ meson setup build --wipe
 
 .PHONY: dev
 dev:

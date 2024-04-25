@@ -3,14 +3,14 @@ project(
     'cpp',
     license: 'GNU GPL version 3',
     version: '0.0.1',
-    # default_options: [', 'warning_level=3'],
+    default_options: [ 'c_std=c++23', 'warning_level=3' ],
     meson_version: '>=1.2.1',
 )
 
-c_args = [
-    '-std=c++17',
+cpp_args = [
     '-Wall',
     '-Werror',
+    '-fmodules-ts',
     # '-ansi',
     '-W',
     '-Wextra',
@@ -23,7 +23,8 @@ c_args = [
 ]
 
 source_files = [
-    'src/main.cpp',
+    'src/main.cc',
+    'src/commands.cc'
 ]
 headers = include_directories('include')
 
@@ -35,7 +36,7 @@ rapidjson_dep = dependency('rapidjson')
 exe = executable(
     meson.project_name(),
     source_files,
-    c_args: c_args,
+    cpp_args: cpp_args,
     gnu_symbol_visibility: 'default',
     dependencies: [cli11_dep,rapidjson_dep],
     include_directories: [headers],
