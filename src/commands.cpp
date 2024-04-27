@@ -13,4 +13,19 @@
  * along with Onur. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "../include/files.h"
+#include "../include/commands.hpp"
+#include "../include/files.hpp"
+
+#include <iostream>
+#include <ostream>
+
+void grab(void) {
+  std::cout << "Grabbing!" << std::endl;
+
+  auto allConfigs = names();
+  for (auto config : allConfigs) {
+    std::cout << config << std::endl;
+  }
+}
+
+void backup(void) { std::cout << "Backing up" << std::endl; }

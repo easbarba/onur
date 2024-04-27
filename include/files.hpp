@@ -13,10 +13,12 @@
  * along with Onur. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "../include/commands.h"
+#ifndef FILES_H_
+#define FILES_H_
 
-#include <iostream>
-#include <ostream>
+#include <list>
+#include <string>
 
-void grab(void) { std::cout << "Grabbing!" << std::endl; }
-void backup(void) { std::cout << "Backing up" << std::endl; }
+std::list<std::string> names(void);
+
+#endif // FILES_H_

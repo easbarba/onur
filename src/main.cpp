@@ -18,7 +18,7 @@
 #include "CLI/Option.hpp"
 #include <CLI/CLI.hpp>
 
-#include "../include/commands.h"
+#include "../include/commands.hpp"
 
 auto main(int argc, char *argv[]) -> int {
 
