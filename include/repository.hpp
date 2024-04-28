@@ -13,20 +13,19 @@
  * along with Onur. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <filesystem>
+#ifndef REPOSITORY_H_
+#define REPOSITORY_H_
 
-#include "../include/files.hpp"
-#include "../include/globals.hpp"
+#include <list>
+#include <string>
 
-std::list<std::filesystem::path> allConfigs(void) {
-  Globals globals;
+#include <nlohmann/json.hpp>
 
-  std::list<std::filesystem::path> allConfigs;
-  for (auto config : std::filesystem::directory_iterator(globals.onurDir)) {
-    if (config.exists() && config.path().extension() == ".json") {
-      allConfigs.push_back(config);
-    }
-  }
+#include "konfig.hpp"
 
-  return allConfigs;
-}
+std::list<Konfig> multi(void);
+Konfig single(std::filesystem::path filepath);
+nlohmann::basic_json<> parse_file(std::string jsonString);
+std::string contents_of(std::string path_to_file);
+
+#endif // REPOSITORY_H_

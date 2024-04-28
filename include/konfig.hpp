@@ -13,20 +13,20 @@
  * along with Onur. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <filesystem>
+#ifndef KONFIG_H_
+#define KONFIG_H_
 
-#include "../include/files.hpp"
-#include "../include/globals.hpp"
+#include <list>
+#include <map>
 
-std::list<std::filesystem::path> allConfigs(void) {
-  Globals globals;
+#include "project.hpp"
 
-  std::list<std::filesystem::path> allConfigs;
-  for (auto config : std::filesystem::directory_iterator(globals.onurDir)) {
-    if (config.exists() && config.path().extension() == ".json") {
-      allConfigs.push_back(config);
-    }
-  }
+class Konfig {
+public:
+  Konfig();
 
-  return allConfigs;
-}
+  std::string topic;
+  std::map<std::string, std::list<Project>> subtopics;
+};
+
+#endif // KONFIG_H_

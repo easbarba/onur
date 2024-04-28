@@ -16,9 +16,9 @@
 #ifndef FILES_H_
 #define FILES_H_
 
+#include <filesystem>
 #include <list>
-#include <string>
 
-std::list<std::string> names(void);
+std::list<std::filesystem::path> allConfigs(void);
 
 #endif // FILES_H_

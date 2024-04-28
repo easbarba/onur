@@ -16,7 +16,10 @@
 #ifndef COMMANDS_H_
 #define COMMANDS_H_
 
+#include "project.hpp"
+
 void grab(void);
 void backup(void);
+void printProjectInfo(Project projekt);
 
 #endif // COMMANDS_H_

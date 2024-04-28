@@ -27,20 +27,22 @@ source_files = [
     'src/commands.cpp',
     'src/files.cpp',
     'src/globals.cpp',
+    'src/repository.cpp',
+    'src/konfig.cpp'
 ]
 headers = include_directories('include')
 
 # =========================== MAIN
 
 cli11_dep = dependency('cli11')
-rapidjson_dep = dependency('rapidjson')
+nlohmann_json_dep  = dependency('nlohmann_json')
 
 exe = executable(
     meson.project_name(),
     source_files,
     cpp_args: cpp_args,
     gnu_symbol_visibility: 'default',
-    dependencies: [ cli11_dep, rapidjson_dep ],
+    dependencies: [ cli11_dep, nlohmann_json_dep ],
     include_directories: [ headers ],
     install: true,
 )

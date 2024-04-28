@@ -14,18 +14,29 @@
  */
 
 #include "../include/commands.hpp"
-#include "../include/files.hpp"
+#include "../include/repository.hpp"
 
 #include <iostream>
 #include <ostream>
 
 void grab(void) {
-  std::cout << "Grabbing!" << std::endl;
 
-  auto allConfigs = names();
-  for (auto config : allConfigs) {
-    std::cout << config << std::endl;
+  for (auto single : multi()) {
+    std::cout << "\nConfig: " << single.topic << std::endl;
+
+    for (auto subtopic : single.subtopics) {
+      std::cout << "\n  Subtopic: " << subtopic.first << "\n" << std::endl;
+
+      for (auto project : subtopic.second) {
+        printProjectInfo(project);
+      }
+    }
   }
 }
 
 void backup(void) { std::cout << "Backing up" << std::endl; }
+
+void printProjectInfo(Project project) {
+  std::cout << "    name: " << project.name << " - url: " << project.url
+            << " - branch: " << project.branch << std::endl;
+}

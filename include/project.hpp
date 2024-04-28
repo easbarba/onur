@@ -13,20 +13,21 @@
  * along with Onur. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <filesystem>
+#ifndef PROJECT_H_
+#define PROJECT_H_
 
-#include "../include/files.hpp"
-#include "../include/globals.hpp"
+#include <string>
 
-std::list<std::filesystem::path> allConfigs(void) {
-  Globals globals;
+class Project {
+public:
+  Project(std::string name, std::string url, std::string branch)
+      : name(name), url(url), branch(branch) {};
 
-  std::list<std::filesystem::path> allConfigs;
-  for (auto config : std::filesystem::directory_iterator(globals.onurDir)) {
-    if (config.exists() && config.path().extension() == ".json") {
-      allConfigs.push_back(config);
-    }
-  }
+  std::string name;
+  std::string url;
+  std::string branch;
 
-  return allConfigs;
-}
+  // std::string toString() const;
+};
+
+#endif // PROJECT_H_
