@@ -16,6 +16,7 @@ along with Onur. If not, see <https://www.gnu.org/licenses/>.
 # Onur
 
 Easily manage multiple FLOSS repositories.
+[c](https://gitlab.com/easbarba/onur-c) |
 [go](https://gitlab.com/easbarba/onur-go) | [python](https://gitlab.com/easbarba/onur-python) | [rust](https://gitlab.com/easbarba/onur-rust) | [php](https://gitlab.com/easbarba/onur-php) | [java](https://gitlab.com/easbarba/onur-java) 
 
 ## USAGE
@@ -32,7 +33,7 @@ onur help
 
 ## INSTALLATION
 
-`Onur` requires a [C99](https://gcc.gnu.org/) compiler and [Meson](https://mesonbuild.com/), then just run `make clean all`, and executable file will be placed at `$PWD/.build/onur`.
+`Onur` requires a [C++20](https://gcc.gnu.org/) compiler and [Meson](https://mesonbuild.com/), then just run `make clean all`, and executable file will be placed at `$PWD/.build/onur`.
 
 Tip: A clean install without messing around your system is easily achievable with [GNU Guix](https://guix.gnu.org/manual/devel/en/html_node/Invoking-guix-shell.html): `guix shell --check`.
 
@@ -76,6 +77,10 @@ single-branch = true
 quiet = true
 depth = 1
 ```
+
+## SCREENSHOT
+
+![Onur CLI](onur.png)
 
 ## LICENSE
 

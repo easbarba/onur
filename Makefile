@@ -23,7 +23,7 @@ BUILDDIR = ./build
 
 .PHONY: all
 all: deps
-	meson compile -C $(BUILDDIR)
+	CC=g++ meson compile -C $(BUILDDIR)
 
 .PHONY: deps
 deps:
@@ -31,15 +31,12 @@ deps:
 
 .PHONY: dev
 dev:
-	meson compile -C $(BUILDDIR)
+	CC=g++ meson compile -C $(BUILDDIR)
 
-# .PHONY: all
-# all:
-# 	cmake -B ${BUILDDIR} -S .
-# 	cmake --build ${BUILDDIR}
-
-# .PHONY: dev
-# dev:
+.PHONY: cmake
+all:
+	cmake -B ${BUILDDIR} -S .
+	cmake --build ${BUILDDIR}
 
 .PHONY: test
 test:
@@ -59,7 +56,7 @@ uninstall:
 
 .PHONY: format
 format:
-	indent -l 80 -gnu -nut -bl  src/*.c
+	clang-format -i ./src/*.cpp ./include/*.hpp
 
 .PHONY: lint
 lint:

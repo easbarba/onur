@@ -15,4 +15,4 @@
 
 #include "../include/konfig.hpp"
 
-Konfig::Konfig() {}
+Konfig::Konfig () {}

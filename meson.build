@@ -28,7 +28,8 @@ source_files = [
     'src/files.cpp',
     'src/globals.cpp',
     'src/repository.cpp',
-    'src/konfig.cpp'
+    'src/konfig.cpp',
+    'src/actions.cpp'
 ]
 headers = include_directories('include')
 
@@ -36,15 +37,18 @@ headers = include_directories('include')
 
 cli11_dep = dependency('cli11')
 nlohmann_json_dep  = dependency('nlohmann_json')
+# catch2_dep = dependency('catch2')
 
 exe = executable(
     meson.project_name(),
     source_files,
     cpp_args: cpp_args,
     gnu_symbol_visibility: 'default',
-    dependencies: [ cli11_dep, nlohmann_json_dep ],
+    dependencies: [ cli11_dep, nlohmann_json_dep ], # , catch2_dep
     include_directories: [ headers ],
     install: true,
 )
 
-test('basic', exe)
+if get_option('tests')
+  subdir('tests')
+endif

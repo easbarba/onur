@@ -13,30 +13,58 @@
  * along with Onur. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "../include/commands.hpp"
-#include "../include/repository.hpp"
-
+#include <filesystem>
+#include <format>
 #include <iostream>
 #include <ostream>
 
-void grab(void) {
+#include "../include/commands.hpp"
 
-  for (auto single : multi()) {
-    std::cout << "\nConfig: " << single.topic << std::endl;
+using std::cout;
+using std::endl;
+using std::format;
+using std::filesystem::exists;
+using std::filesystem::path;
 
-    for (auto subtopic : single.subtopics) {
-      std::cout << "\n  Subtopic: " << subtopic.first << "\n" << std::endl;
+Commands::Commands () {}
 
-      for (auto project : subtopic.second) {
-        printProjectInfo(project);
-      }
+auto
+Commands::grab (void) -> void
+{
+  for (auto single : repository.multi ())
+    {
+      cout << "\nConfig: " << single.topic << endl;
+
+      for (auto subtopic : single.subtopics)
+        {
+          cout << "\n  Subtopic: " << subtopic.first << "\n" << endl;
+          for (auto project : subtopic.second)
+            {
+              auto placeholder{ path (globals.projectsDir / single.topic
+                                      / subtopic.first / project.name) };
+              auto dirpath{ placeholder };
+
+              printProjectInfo (project);
+
+              if (exists (dirpath / ".git" / "config"))
+                actions.pull (dirpath);
+              else
+                actions.klone (project, dirpath);
+            }
+        }
     }
-  }
 }
 
-void backup(void) { std::cout << "Backing up" << std::endl; }
+auto
+Commands::backup (void) -> void
+{
+  cout << "Backing up" << endl;
+}
 
-void printProjectInfo(Project project) {
-  std::cout << "    name: " << project.name << " - url: " << project.url
-            << " - branch: " << project.branch << std::endl;
+auto
+Commands::printProjectInfo (Project project) -> void
+{
+  auto message{ format ("\tname: {} - url: {} - branch: {}", project.name,
+                        project.url, project.branch) };
+  cout << message << endl;
 }

@@ -18,15 +18,25 @@
 #include "../include/files.hpp"
 #include "../include/globals.hpp"
 
-std::list<std::filesystem::path> allConfigs(void) {
+using std::list;
+using std::filesystem::directory_iterator;
+using std::filesystem::path;
+
+Files::Files () {}
+
+auto
+Files::allConfigs (void) -> list<path>
+{
   Globals globals;
 
-  std::list<std::filesystem::path> allConfigs;
-  for (auto config : std::filesystem::directory_iterator(globals.onurDir)) {
-    if (config.exists() && config.path().extension() == ".json") {
-      allConfigs.push_back(config);
+  list<path> allConfigs;
+  for (auto config : directory_iterator (globals.onurDir))
+    {
+      if (config.exists () && config.path ().extension () == ".json")
+        {
+          allConfigs.push_back (config);
+        }
     }
-  }
 
   return allConfigs;
 }

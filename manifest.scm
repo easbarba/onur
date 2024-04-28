@@ -18,5 +18,4 @@
    "ninja"
    "valgrind"
    "indent"
-   "splint"
-   "cunit"))
+   "splint"))

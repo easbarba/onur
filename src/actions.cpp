@@ -13,18 +13,31 @@
  * along with Onur. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef FILES_H_
-#define FILES_H_
+#include <cstdlib>
+#include <format>
+#include <string>
 
-#include <filesystem>
-#include <list>
+#include "../include/actions.hpp"
 
-class Files
+using std::format;
+using std::string;
+using std::system;
+using std::filesystem::path;
+
+Actions::Actions () {}
+
+auto
+Actions::klone (Project project, path dirpath) -> void
 {
-public:
-  Files ();
+  auto finalCommand{ format (
+      "git clone --single-branch --depth=1 --quiet {} {}", project.url,
+      dirpath.string ()) };
+  system (finalCommand.c_str ());
+}
 
-  auto allConfigs (void) -> std::list<std::filesystem::path>;
-};
-
-#endif // FILES_H_
+auto
+Actions::pull (path dirpath) -> void
+{
+  auto finalCommand{ format ("git -C {}  pull --quiet", dirpath.string ()) };
+  system (finalCommand.c_str ());
+}

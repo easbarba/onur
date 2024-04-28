@@ -21,54 +21,72 @@
 
 #include "nlohmann/json.hpp"
 
-#include "../include/files.hpp"
 #include "../include/konfig.hpp"
 #include "../include/project.hpp"
 #include "../include/repository.hpp"
 
-std::list<Konfig> multi(void) {
-  auto _allConfigs = allConfigs();
-  std::list<Konfig> result;
+using std::ifstream;
+using std::istreambuf_iterator;
+using std::list;
+using std::map;
+using std::string;
+using std::filesystem::path;
 
-  for (auto konfig : _allConfigs) {
-    result.push_back(single(konfig));
-  }
+Repository::Repository () {}
 
-  return result;
-}
+auto
+Repository::multi (void) -> list<Konfig>
+{
+  auto _allConfigs{ files.allConfigs () };
+  list<Konfig> result;
 
-Konfig single(std::filesystem::path filepath) {
-  Konfig result;
-  std::map<std::string, std::list<Project>> subtopiks;
-
-  auto configParsed = parse_file(contents_of(filepath));
-  result.topic = filepath.stem();
-
-  for (auto &[subtopic, subtopics] : configParsed.items()) {
-    std::list<Project> projects;
-    for (auto projekt : subtopics) {
-      std::string branch = "master";
-      if (!projekt["branch"].is_null())
-        branch = projekt["branch"];
-
-      auto pkt = Project(projekt["name"], projekt["url"], branch);
-
-      projects.push_back(pkt);
+  for (auto konfig : _allConfigs)
+    {
+      result.push_back (single (konfig));
     }
 
-    subtopiks[subtopic] = projects;
-  }
-
-  result.subtopics = subtopiks;
   return result;
 }
 
-nlohmann::basic_json<> parse_file(std::string jsonString) {
-  return nlohmann::json::parse(jsonString);
+auto
+Repository::single (path filepath) -> Konfig
+{
+  Konfig result;
+  map<string, list<Project> > subtopiks;
+
+  auto configParsed = parse_file (contents_of (filepath));
+  result.topic = { filepath.stem () };
+
+  for (auto &[subtopic, subtopics] : configParsed.items ())
+    {
+      list<Project> projects;
+      for (auto projekt : subtopics)
+        {
+          string branch{ "master" };
+          if (!projekt["branch"].is_null ())
+            branch = projekt["branch"];
+
+          auto pkt{ Project (projekt["name"], projekt["url"], branch) };
+
+          projects.push_back (pkt);
+        }
+
+      subtopiks[subtopic] = { projects };
+    }
+
+  result.subtopics = { subtopiks };
+  return result;
 }
 
-std::string contents_of(std::string path_to_file) {
-  std::ifstream file(path_to_file);
-  return {std::istreambuf_iterator<char>(file),
-          std::istreambuf_iterator<char>{}};
+auto
+Repository::parse_file (string jsonString) -> nlohmann::basic_json<>
+{
+  return nlohmann::json::parse (jsonString);
+}
+
+auto
+Repository::contents_of (string path_to_file) -> string
+{
+  ifstream file (path_to_file);
+  return { istreambuf_iterator<char> (file), istreambuf_iterator<char>{} };
 }

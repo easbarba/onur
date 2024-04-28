@@ -17,7 +17,12 @@
 
 #include <filesystem>
 
-Globals::Globals() {
-  homeDir = std::filesystem::path(std::getenv("HOME"));
-  onurDir = homeDir / ".config" / "onur";
+using std::getenv;
+using std::filesystem::path;
+
+Globals::Globals ()
+{
+  homeDir = { path (getenv ("HOME")) };
+  onurDir = { homeDir / ".config" / "onur" };
+  projectsDir = { homeDir / "Projects" };
 }

@@ -18,12 +18,14 @@
 
 #include <filesystem>
 
-class Globals {
+class Globals
+{
 public:
-  Globals();
+  Globals ();
 
   std::filesystem::path homeDir;
   std::filesystem::path onurDir;
+  std::filesystem::path projectsDir;
 };
 
 #endif // GLOBALS_H_

@@ -16,10 +16,23 @@
 #ifndef COMMANDS_H_
 #define COMMANDS_H_
 
+#include "actions.hpp"
+#include "globals.hpp"
 #include "project.hpp"
+#include "repository.hpp"
 
-void grab(void);
-void backup(void);
-void printProjectInfo(Project projekt);
+class Commands
+{
+public:
+  Commands ();
+
+  Globals globals;
+  Actions actions;
+  Repository repository;
+
+  auto grab (void) -> void;
+  auto backup (void) -> void;
+  auto printProjectInfo (Project projekt) -> void;
+};
 
 #endif // COMMANDS_H_

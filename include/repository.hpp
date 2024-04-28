@@ -21,11 +21,20 @@
 
 #include <nlohmann/json.hpp>
 
+#include "files.hpp"
 #include "konfig.hpp"
 
-std::list<Konfig> multi(void);
-Konfig single(std::filesystem::path filepath);
-nlohmann::basic_json<> parse_file(std::string jsonString);
-std::string contents_of(std::string path_to_file);
+class Repository
+{
+public:
+  Repository ();
+
+  Files files;
+
+  auto multi (void) -> std::list<Konfig>;
+  auto single (std::filesystem::path filepath) -> Konfig;
+  auto parse_file (std::string jsonString) -> nlohmann::basic_json<>;
+  auto contents_of (std::string path_to_file) -> std::string;
+};
 
 #endif // REPOSITORY_H_

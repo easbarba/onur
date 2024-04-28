@@ -21,12 +21,13 @@
 
 #include "project.hpp"
 
-class Konfig {
+class Konfig
+{
 public:
-  Konfig();
+  Konfig ();
 
   std::string topic;
-  std::map<std::string, std::list<Project>> subtopics;
+  std::map<std::string, std::list<Project> > subtopics;
 };
 
 #endif // KONFIG_H_

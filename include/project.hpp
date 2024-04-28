@@ -18,16 +18,15 @@
 
 #include <string>
 
-class Project {
+class Project
+{
 public:
-  Project(std::string name, std::string url, std::string branch)
-      : name(name), url(url), branch(branch) {};
+  Project (std::string name, std::string url, std::string branch)
+      : name (name), url (url), branch (branch) {};
 
   std::string name;
   std::string url;
   std::string branch;
-
-  // std::string toString() const;
 };
 
 #endif // PROJECT_H_

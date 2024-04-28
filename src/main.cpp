@@ -13,6 +13,7 @@
  * along with Onur. If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <asio/io_context.hpp>
 #include <string>
 
 #include "CLI/Option.hpp"
@@ -20,29 +21,40 @@
 
 #include "../include/commands.hpp"
 
-auto main(int argc, char *argv[]) -> int {
+#include <asio.hpp>
 
-  CLI::App app{"Easily manage multiple FLOSS repositories."};
-  argv = app.ensure_utf8(argv);
+using std::string;
 
-  std::string filename = "default";
-  app.add_option("-f,--file", filename, "A help string");
-  app.set_version_flag("--version", std::string("0.0.1"));
+auto
+main (int argc, char *argv[]) -> int
+{
+  CLI::App app{ "Easily manage multiple FLOSS repositories." };
+  argv = { app.ensure_utf8 (argv) };
 
-  CLI::App *grab_cmd = app.add_subcommand("grab", "grab all projects");
-  CLI::App *backup_cmd =
-      app.add_subcommand("backup", "compress all selected projects");
-  app.require_subcommand();
+  string filename{ "default" };
+  app.add_option ("-f,--file", filename, "A help string");
+  app.set_version_flag ("--version", string ("0.0.1"));
 
-  CLI11_PARSE(app, argc, argv);
+  CLI::App *grab_cmd{ app.add_subcommand ("grab", "grab all projects") };
+  CLI::App *backup_cmd{ app.add_subcommand (
+      "backup", "compress all selected projects") };
+  app.require_subcommand ();
 
-  if (*grab_cmd) {
-    grab();
-  }
+  CLI11_PARSE (app, argc, argv);
 
-  if (*backup_cmd) {
-    backup();
-  }
+  Commands commands;
+
+  if (*grab_cmd)
+    {
+      commands.grab ();
+    }
+
+  if (*backup_cmd)
+    {
+      commands.backup ();
+    }
+
+  asio::io_context io;
 
   return 0;
 }

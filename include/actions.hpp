@@ -13,18 +13,20 @@
  * along with Onur. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef FILES_H_
-#define FILES_H_
+#ifndef ACTIONS_H_
+#define ACTIONS_H_
 
 #include <filesystem>
-#include <list>
 
-class Files
+#include "project.hpp"
+
+class Actions
 {
 public:
-  Files ();
+  Actions ();
 
-  auto allConfigs (void) -> std::list<std::filesystem::path>;
+  auto klone (Project project, std::filesystem::path dirpath) -> void;
+  auto pull (std::filesystem::path dirpath) -> void;
 };
 
-#endif // FILES_H_
+#endif // ACTIONS_H_

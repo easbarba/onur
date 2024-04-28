@@ -17,6 +17,7 @@ along with Onur. If not, see <https://www.gnu.org/licenses/>.
 
 ## 0.2.0
 
+- feat: add pull and klone actions
 - feat: parse and bundle configurations
 - feat: get all config files names
 - feat: add placeholder actions
