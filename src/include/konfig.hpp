@@ -13,28 +13,18 @@
  * along with Onur. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef REPOSITORY_H_
-#define REPOSITORY_H_
+#pragma once
 
 #include <list>
-#include <string>
+#include <map>
 
-#include <nlohmann/json.hpp>
+#include "project.hpp"
 
-#include "files.hpp"
-#include "konfig.hpp"
-
-class Repository
+class Konfig
 {
 public:
-  Repository ();
+  Konfig ();
 
-  Files files;
-
-  auto multi (void) -> std::list<Konfig>;
-  auto single (std::filesystem::path filepath) -> Konfig;
-  auto parse_file (std::string jsonString) -> nlohmann::basic_json<>;
-  auto contents_of (std::string path_to_file) -> std::string;
+  std::string topic;
+  std::map<std::string, std::list<Project> > subtopics;
 };
-
-#endif // REPOSITORY_H_

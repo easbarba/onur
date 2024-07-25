@@ -13,19 +13,19 @@
  * along with Onur. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef GLOBALS_H_
-#define GLOBALS_H_
+#pragma once
 
 #include <filesystem>
+
+using std::getenv;
+using std::filesystem::path;
 
 class Globals
 {
 public:
   Globals ();
 
-  std::filesystem::path homeDir;
-  std::filesystem::path onurDir;
-  std::filesystem::path projectsDir;
+  path homeDir;
+  path onurDir;
+  path projectsDir;
 };
-
-#endif // GLOBALS_H_

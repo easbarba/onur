@@ -19,11 +19,11 @@
 #include <list>
 #include <string>
 
-#include "nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
 
 #include "../include/konfig.hpp"
+#include "../include/parse.hpp"
 #include "../include/project.hpp"
-#include "../include/repository.hpp"
 
 using std::ifstream;
 using std::istreambuf_iterator;
@@ -32,12 +32,12 @@ using std::map;
 using std::string;
 using std::filesystem::path;
 
-Repository::Repository () {}
+Parse::Parse () {}
 
 auto
-Repository::multi (void) -> list<Konfig>
+Parse::multi (void) -> list<Konfig>
 {
-  auto _allConfigs{ files.allConfigs () };
+  auto _allConfigs{ repository.allConfigs () };
   list<Konfig> result;
 
   for (auto konfig : _allConfigs)
@@ -49,7 +49,7 @@ Repository::multi (void) -> list<Konfig>
 }
 
 auto
-Repository::single (path filepath) -> Konfig
+Parse::single (path filepath) -> Konfig
 {
   Konfig result;
   map<string, list<Project> > subtopiks;
@@ -79,13 +79,13 @@ Repository::single (path filepath) -> Konfig
 }
 
 auto
-Repository::parse_file (string jsonString) -> nlohmann::basic_json<>
+Parse::parse_file (string jsonString) -> nlohmann::basic_json<>
 {
   return nlohmann::json::parse (jsonString);
 }
 
 auto
-Repository::contents_of (string path_to_file) -> string
+Parse::contents_of (string path_to_file) -> string
 {
   ifstream file (path_to_file);
   return { istreambuf_iterator<char> (file), istreambuf_iterator<char>{} };

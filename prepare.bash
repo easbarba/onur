@@ -13,4 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with Onur. If not, see <https://www.gnu.org/licenses/>.
 
-make fmt lint test
+mkdir -p ~/.config/onur
+
+cp ./examples/* ~/.config/onur
+
+touch ~/.config/onur/emptyfile.json
+
+ln -sf ~/nonexistentfile ~/.config/onur/danglingsymlink.json
+
+rm ~/.config/onur/lua.json && cp ./examples/lua.json ~/ && ln -sf ~/lua.json ~/.config/onur/lualink.json

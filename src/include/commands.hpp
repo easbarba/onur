@@ -13,18 +13,22 @@
  * along with Onur. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef FILES_H_
-#define FILES_H_
+#pragma once
 
-#include <filesystem>
-#include <list>
+#include "actions.hpp"
+#include "globals.hpp"
+#include "parse.hpp"
+#include "project.hpp"
 
-class Files
+class Commands
 {
 public:
-  Files ();
+  Commands ();
 
-  auto allConfigs (void) -> std::list<std::filesystem::path>;
+  Globals globals;
+  Actions actions;
+  Parse parse;
+
+  auto grab (void) -> void;
+  auto backup (void) -> void;
 };
-
-#endif // FILES_H_

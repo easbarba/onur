@@ -1,10 +1,23 @@
+# Onur is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Onur is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Onur. If not, see <https://www.gnu.org/licenses/>.
+
 project(
     'onur',
     'cpp',
     license: 'GNU GPL version 3',
-    version: '0.1.0',
+    version: '0.2.0',
     default_options: [ 'cpp_std=c++20', 'warning_level=3' ],
-    meson_version: '>=1.2.1',
+    meson_version: '>=1.4.0',
 )
 
 cpp = meson.get_compiler('cpp')
@@ -22,32 +35,11 @@ cpp_args = [
 ]
 # '-fsanitize=address,undefined'
 
-source_files = [
-    'src/main.cpp',
-    'src/commands.cpp',
-    'src/files.cpp',
-    'src/globals.cpp',
-    'src/repository.cpp',
-    'src/konfig.cpp',
-    'src/actions.cpp'
-]
-headers = include_directories('include')
+# SHARED
+inc_headers = include_directories('src/include')
 
-# =========================== MAIN
-
-cli11_dep = dependency('cli11')
-nlohmann_json_dep  = dependency('nlohmann_json')
-# catch2_dep = dependency('catch2')
-
-exe = executable(
-    meson.project_name(),
-    source_files,
-    cpp_args: cpp_args,
-    gnu_symbol_visibility: 'default',
-    dependencies: [ cli11_dep, nlohmann_json_dep ], # , catch2_dep
-    include_directories: [ headers ],
-    install: true,
-)
+# PROJECTS
+subdir('src')
 
 if get_option('tests')
   subdir('tests')

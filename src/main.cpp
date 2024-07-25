@@ -13,15 +13,12 @@
  * along with Onur. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <asio/io_context.hpp>
 #include <string>
 
 #include "CLI/Option.hpp"
 #include <CLI/CLI.hpp>
 
-#include "../include/commands.hpp"
-
-#include <asio.hpp>
+#include "include/commands.hpp"
 
 using std::string;
 
@@ -53,8 +50,6 @@ main (int argc, char *argv[]) -> int
     {
       commands.backup ();
     }
-
-  asio::io_context io;
 
   return 0;
 }

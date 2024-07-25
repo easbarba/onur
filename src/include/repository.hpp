@@ -13,20 +13,15 @@
  * along with Onur. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef ACTIONS_H_
-#define ACTIONS_H_
+#pragma once
 
 #include <filesystem>
+#include <list>
 
-#include "project.hpp"
-
-class Actions
+class Repository
 {
 public:
-  Actions ();
+  Repository ();
 
-  auto klone (Project project, std::filesystem::path dirpath) -> void;
-  auto pull (std::filesystem::path dirpath) -> void;
+  auto allConfigs (void) -> std::list<std::filesystem::path>;
 };
-
-#endif // ACTIONS_H_

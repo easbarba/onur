@@ -1,0 +1,17 @@
+name: tests
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: registry.gitlab.com/easbarba/onur-cpp:0.2.0
+
+    steps:
+      - name: integration tests
+        run: meson test -C /home/easbarba/app/build

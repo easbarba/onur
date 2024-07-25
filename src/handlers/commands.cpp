@@ -14,15 +14,15 @@
  */
 
 #include <filesystem>
-#include <format>
 #include <iostream>
 #include <ostream>
 
 #include "../include/commands.hpp"
+#include "../include/globals.hpp"
+#include "helpers.hpp"
 
 using std::cout;
 using std::endl;
-using std::format;
 using std::filesystem::exists;
 using std::filesystem::path;
 
@@ -31,13 +31,13 @@ Commands::Commands () {}
 auto
 Commands::grab (void) -> void
 {
-  for (auto single : repository.multi ())
+  for (auto single : parse.multi ())
     {
-      cout << "\nConfig: " << single.topic << endl;
+      cout << "\n " << single.topic << ":" << endl;
 
       for (auto subtopic : single.subtopics)
         {
-          cout << "\n  Subtopic: " << subtopic.first << "\n" << endl;
+          cout << "  + " << subtopic.first << endl;
           for (auto project : subtopic.second)
             {
               auto placeholder{ path (globals.projectsDir / single.topic
@@ -51,6 +51,8 @@ Commands::grab (void) -> void
               else
                 actions.klone (project, dirpath);
             }
+
+          cout << endl;
         }
     }
 }
@@ -59,12 +61,4 @@ auto
 Commands::backup (void) -> void
 {
   cout << "Backing up" << endl;
-}
-
-auto
-Commands::printProjectInfo (Project project) -> void
-{
-  auto message{ format ("\tname: {} - url: {} - branch: {}", project.name,
-                        project.url, project.branch) };
-  cout << message << endl;
 }

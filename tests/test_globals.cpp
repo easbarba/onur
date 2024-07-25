@@ -13,20 +13,12 @@
  * along with Onur. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef PROJECT_H_
-#define PROJECT_H_
+#include <catch2/catch_all.hpp>
 
-#include <string>
+// #include "globals.hpp"
 
-class Project
+TEST_CASE ("Addition works correctly", "[add]")
 {
-public:
-  Project (std::string name, std::string url, std::string branch)
-      : name (name), url (url), branch (branch) {};
-
-  std::string name;
-  std::string url;
-  std::string branch;
-};
-
-#endif // PROJECT_H_
+  // Globals globals;
+  // REQUIRE (globals.homeDir == "/home/easbarba");
+}

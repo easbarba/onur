@@ -16,30 +16,27 @@ along with Onur. If not, see <https://www.gnu.org/licenses/>.
 # Onur
 
 Easily manage multiple FLOSS repositories.
-[c](https://gitlab.com/easbarba/onur-c) |
-[go](https://gitlab.com/easbarba/onur-go) | [python](https://gitlab.com/easbarba/onur-python) | [rust](https://gitlab.com/easbarba/onur-rust) | [php](https://gitlab.com/easbarba/onur-php) | [java](https://gitlab.com/easbarba/onur-java) 
 
-## USAGE
+[cpp](https://gitlab.com/easbarba/onur-cpp) |
+[c](https://gitlab.com/easbarba/onur) | [dotnet](https://gitlab.com/easbarba/onur-dotnet) | [go](https://gitlab.com/easbarba/onur-go) | [python](https://gitlab.com/easbarba/onur-python) | [rust](https://gitlab.com/easbarba/onur-rust) | [php](https://gitlab.com/easbarba/onur-php) | [java](https://gitlab.com/easbarba/onur-java) 
+| [ruby](https://gitlab.com/easbarba/onur-ruby)
 
-`Onur` consumes configuration in the following manners:
 
-By default it looks for configuration files at `$XDG_CONFIG/onur` or in the directory set in the `$ONUR_CONFIG_HOME` environment variable.
+
+## Usage
 
 ```shell
 onur grab
-onur archive nuxt,awesomewm,gitignore
-onur help
+onur backup nuxt awesomewm gitignore
+onur --help
 ```
 
-## INSTALLATION
+## Configuration file
 
-`Onur` requires a [C++20](https://gcc.gnu.org/) compiler and [Meson](https://mesonbuild.com/), then just run `make clean all`, and executable file will be placed at `$PWD/.build/onur`.
+`onur` consumes configuration in the following manners:
 
-Tip: A clean install without messing around your system is easily achievable with [GNU Guix](https://guix.gnu.org/manual/devel/en/html_node/Invoking-guix-shell.html): `guix shell --check`.
-
-## CONFIGURATION FILE
-
-A `onur` single configuration file:
+By default it looks for configuration files at `$XDG_CONFIG/onur` or in the
+directory set in the `$ONUR_CONFIG_HOME` environment variable.
 
 ```json
 {
@@ -64,23 +61,61 @@ A `onur` single configuration file:
       "branch": "main",
       "url": "https://github.com/nuxt/framework"
     }
+  ],
+  "tools/gnu": [
+    {
+      "name": "inetutils",
+      "url": "https://git.savannah.gnu.org/git/inetutils.git"
+    },
+    {
+      "name": "gnu-wget",
+      "url": "https://git.savannah.gnu.org/git/wget.git"
+    }
   ]
 }
 ```
 
 More examples of configuration files are at `examples`.
 
-## SETTINGS
+## Settings
+
+`settings.toml`
 
 ```toml
+[git]
 single-branch = true
 quiet = true
 depth = 1
 ```
 
-## SCREENSHOT
+## Installation
+
+`onur` requires a c++ 20 compiler and `meson` to install, locally at `$HOME/.local/bin`, easily with : `make all install`. 
+
+## Development
+
+In development it may suit you better running the tests in a isolated environment
+with containers, that can be done so:
+
+    docker run --rm -it $(docker build -qf Containerfile.run)
+ 
+or: 
+
+    podman build https://gitlab.com/easbarba/onur/-/raw/main/Containerfile.dev --tag onur:latest
+    podman run --rm -it onur:latest 
+
+
+## GNU Guix
+
+In a system with GNU Guix binary installed, its even easier to grab all
+dependencies: `guix shell`.
 
 ![Onur CLI](onur.png)
+
+
+## TODO
+
+Check the `TODO.md` for more information.
 
 ## LICENSE
 

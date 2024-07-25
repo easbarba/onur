@@ -13,16 +13,25 @@
  * along with Onur. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "../include/globals.hpp"
+#pragma once
 
-#include <filesystem>
+#include <list>
+#include <string>
 
-using std::getenv;
-using std::filesystem::path;
+#include <nlohmann/json.hpp>
 
-Globals::Globals ()
+#include "konfig.hpp"
+#include "repository.hpp"
+
+class Parse
 {
-  homeDir = { path (getenv ("HOME")) };
-  onurDir = { homeDir / ".config" / "onur" };
-  projectsDir = { homeDir / "Projects" };
-}
+public:
+  Parse ();
+
+  Repository repository;
+
+  auto multi (void) -> std::list<Konfig>;
+  auto single (std::filesystem::path filepath) -> Konfig;
+  auto parse_file (std::string jsonString) -> nlohmann::basic_json<>;
+  auto contents_of (std::string path_to_file) -> std::string;
+};

@@ -1,0 +1,5 @@
+./build/onur grab
+./build/onur backup awesomewm,git,apple-swift
+./build/onur --help
+
+meson test

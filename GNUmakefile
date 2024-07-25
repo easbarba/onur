@@ -13,34 +13,32 @@
 
 # DEPS: gcc meson ninja muon coreutils valgrind indent splint cunit
 
+.DEFAULT_GOAL: test
 PREFIX     ?= ${HOME}/.local/bin
-NAME       = onur
+NAME       = onur-cpp
 RM         = rm -rf
-
 BUILDDIR = ./build
+
+RUNNER := podman
+VERSION := $(shell awk -F "'" '/version:/ { print $$2; exit }' meson.build)
+CONTAINER_IMAGE := registry.gitlab.com/${USER}/${NAME}:${VERSION}
 
 # ------------------------------------ TASKS
 
 .PHONY: all
-all: deps
+all:
+	CC=g++ meson setup $(BUILDDIR) --wipe
 	CC=g++ meson compile -C $(BUILDDIR)
-
-.PHONY: deps
-deps:
-	CC=g++ meson setup build --wipe
 
 .PHONY: dev
 dev:
+	CC=g++ meson setup $(BUILDDIR)
 	CC=g++ meson compile -C $(BUILDDIR)
 
 .PHONY: cmake
-all:
+cmake:
 	cmake -B ${BUILDDIR} -S .
 	cmake --build ${BUILDDIR}
-
-.PHONY: test
-test:
-	@echo "testing"
 
 .PHONY: clean
 clean:
@@ -48,7 +46,7 @@ clean:
 
 .PHONY: install
 install:
-	cp -v ${BUILDDIR}/${NAME} ${PREFIX}/${NAME}
+	cp -v ${BUILDDIR}/src/onur ${PREFIX}/onur
 
 .PHONY: uninstall
 uninstall:
@@ -60,7 +58,7 @@ format:
 
 .PHONY: lint
 lint:
-	splint -preproc -unrecog -warnposix src/*.c
+	clang-check ./src/*.cpp
 
 .PHONY: leaks
 leaks:
@@ -71,23 +69,33 @@ leaks:
          ./build/onur grab
          # --log-file=valgrind-output \
 
-# ------------------------------------ ACTIONS
+# ------------------------------- CONTAINER
 
-.PHONY: default
-default:
-	$(BUILDDIR)/$(NAME)
+.PHONY: image.build
+image.build:
+	${RUNNER} build --file ./Containerfile --tag ${CONTAINER_IMAGE} --env ONUR_VERSION=${VERSION}
 
-.PHONY: usage
-usage:
-	$(BUILDDIR)/$(NAME) --help
+.PHONY: image.repl
+image.repl:
+	${RUNNER} run --rm -it \
+		--volume ${PWD}:/app:Z \
+		--workdir /home/easbarba/app \
+		${CONTAINER_IMAGE} bash
 
-.PHONY: grab
-grab:
-	$(BUILDDIR)/$(NAME) grab
+.PHONY: image.publish
+image.publish:
+	${RUNNER} push ${CONTAINER_IMAGE}
 
-.PHONY: backup
-backup:
-	$(BUILDDIR)/$(NAME) backup meh,foo,bar
+.PHONY: test
+test:
+	${RUNNER} run --rm -it \
+		--volume ${PWD}:/app:Z \
+		--workdir /home/easbarba/app \
+		${CONTAINER_IMAGE} bash -c "meson test -C build"
 
-
-.DEFAULT_GOAL: test
+.PHONY: image.commands
+image.commands:
+	${RUNNER} run --rm -it \
+		--volume ${PWD}:/app:Z \
+		--workdir /home/easbarba/app \
+		${CONTAINER_IMAGE} bash -c "$(shell cat ./container-commands | fzf)"

@@ -13,26 +13,17 @@
  * along with Onur. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef COMMANDS_H_
-#define COMMANDS_H_
+#pragma once
 
-#include "actions.hpp"
-#include "globals.hpp"
+#include <filesystem>
+
 #include "project.hpp"
-#include "repository.hpp"
 
-class Commands
+class Actions
 {
 public:
-  Commands ();
+  Actions ();
 
-  Globals globals;
-  Actions actions;
-  Repository repository;
-
-  auto grab (void) -> void;
-  auto backup (void) -> void;
-  auto printProjectInfo (Project projekt) -> void;
+  auto klone (Project project, std::filesystem::path dirpath) -> void;
+  auto pull (std::filesystem::path dirpath) -> void;
 };
-
-#endif // COMMANDS_H_

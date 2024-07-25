@@ -13,21 +13,17 @@
  * along with Onur. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef KONFIG_H_
-#define KONFIG_H_
+#pragma once
 
-#include <list>
-#include <map>
+#include <string>
 
-#include "project.hpp"
-
-class Konfig
+class Project
 {
 public:
-  Konfig ();
+  Project (std::string name, std::string url, std::string branch)
+      : name (name), url (url), branch (branch) {};
 
-  std::string topic;
-  std::map<std::string, std::list<Project> > subtopics;
+  std::string name;
+  std::string url;
+  std::string branch;
 };
-
-#endif // KONFIG_H_

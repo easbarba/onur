@@ -17,11 +17,11 @@ along with Onur. If not, see <https://www.gnu.org/licenses/>.
 
 ### High
 
+- verbose
 - validation of repository links 
 - actions: --filter rust
 - actions: --only rust,haskel,commonlisp
 - actions: --exclude rust,haskel,commonlisp
-- config: branch defaults to master
 
 ### Low
 

@@ -7,3 +7,7 @@ PROTOCOL.md
 README.md
 TODO.md
 manifest.scm
+/build
+/subprojects/*
+!/subprojects/*.wrap
+/.cache
