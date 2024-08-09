@@ -2,6 +2,15 @@
 build_debug/
 build_release/
 
+# MESON
+
+/build
+/subprojects/*
+!/subprojects/*.wrap
+/.cache
+
+# CMAKE
+
 # Generated and user files
 **/CMakeCache.txt
 **/CMakeUserPresets.json
@@ -11,8 +20,55 @@ build_release/
 **/install_manifest.txt
 **/compile_commands.json
 
+# Build directories
+build/
+out/
+cmake-build-*/
 
-/build
-/subprojects/*
-!/subprojects/*.wrap
-/.cache
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Testing/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# IDE-specific files (example for Visual Studio Code)
+.vscode/
+
+# OS-specific files
+.DS_Store
+Thumbs.db

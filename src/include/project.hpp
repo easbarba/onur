@@ -17,13 +17,46 @@
 
 #include <string>
 
+#include <nlohmann/json.hpp>
+
+#include "cli.hpp"
+
 class Project
 {
+  std::string name;
+  std::string url;
+  std::string branch;
+
 public:
   Project (std::string name, std::string url, std::string branch)
       : name (name), url (url), branch (branch) {};
 
-  std::string name;
-  std::string url;
-  std::string branch;
+  Project (ConfigEntries entries)
+      : name (entries.name.value ()), url (entries.url.value ()),
+        branch (entries.branch) {};
+
+  std::string
+  Name ()
+  {
+    return name;
+  }
+
+  std::string
+  Url ()
+  {
+    return url;
+  }
+  std::string
+  Branch ()
+  {
+    return branch;
+  }
+
+  nlohmann::json
+  to_json () const
+  {
+    return nlohmann::json{ { "name", name },
+                           { "url", url },
+                           { "branch", branch } };
+  }
 };

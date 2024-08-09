@@ -14,45 +14,49 @@
  */
 
 #include <filesystem>
-#include <iostream>
-#include <ostream>
+#include <format>
+#include <optional>
+#include <print>
+#include <string>
 
 #include "../include/commands.hpp"
-#include "../include/globals.hpp"
 #include "helpers.hpp"
 
-using std::cout;
-using std::endl;
 using std::filesystem::exists;
 using std::filesystem::path;
 
 Commands::Commands () {}
 
 auto
-Commands::grab (void) -> void
+Commands::grab (std::optional<std::string> name) -> void
 {
-  for (auto single : parse.multi ())
-    {
-      cout << "\n " << single.topic << ":" << endl;
+  // if (name.has_value ())
+  //   ConfigTopic config{ configTopicNew (name.value ()) };
 
-      for (auto subtopic : single.subtopics)
+  for (auto singleConfig : parse.multi ())
+    {
+      if (name.has_value () && name.value () != singleConfig.name)
+        continue;
+
+      std::println ("{}: ", singleConfig.name);
+
+      for (auto topic : singleConfig.topics)
         {
-          cout << "  + " << subtopic.first << endl;
-          for (auto project : subtopic.second)
+          std::println ("  + {}", topic.first);
+          for (auto project : topic.second)
             {
-              auto placeholder{ path (globals.projectsDir / single.topic
-                                      / subtopic.first / project.name) };
-              auto dirpath{ placeholder };
+              auto finalpath{ path (globals.projectsDir / singleConfig.name
+                                    / topic.first / project.Name ()) };
 
               printProjectInfo (project);
 
-              if (exists (dirpath / ".git" / "config"))
-                actions.pull (dirpath);
+              if (exists (finalpath / ".git" / "config"))
+                actions.pull (finalpath);
               else
-                actions.klone (project, dirpath);
+                actions.klone (project, finalpath);
             }
 
-          cout << endl;
+          std::println ();
         }
     }
 }
@@ -60,5 +64,100 @@ Commands::grab (void) -> void
 auto
 Commands::backup (void) -> void
 {
-  cout << "Backing up" << endl;
+  std::println ("Backing up");
+}
+
+ConfigTopic
+Commands::configTopicNew (std::string &name)
+{
+  ConfigTopic config;
+
+  if (name.contains ("."))
+    {
+      config.dot = { true };
+
+      std::size_t dot_positon{ name.find (".") };
+      config.name = { name.substr (0, dot_positon) };
+      config.topic = { name.substr (dot_positon + 1) };
+    }
+
+  return config;
+}
+
+auto
+Commands::config (std::string name, ConfigEntries entries) -> void
+{
+  ConfigTopic config{ configTopicNew (name) };
+
+  if (!parse.exist (config.name.value ()))
+    {
+      std::println ("No configuration by {} found!", config.name.value ());
+      return;
+    }
+
+  if (name.ends_with ("."))
+    {
+      printSingleConfig (config, true);
+      return;
+    }
+
+  if (!config.topic.has_value ())
+    {
+      printSingleConfig (config);
+      return;
+    }
+  else
+    {
+      printSingleConfig (config, true);
+      return;
+    }
+
+  // std::println (
+  //     "Please provide a topic and entries to save a new one. Exiting!",
+  //     config.name);
+
+  if (!entries.name.has_value () || !entries.url.has_value ())
+    {
+      std::println ("Enter name and url entries at least. Exiting!");
+      return;
+    }
+
+  parse.save (config.name.value (), config.topic.value (), entries);
+}
+
+auto
+foo () -> void
+{
+  std::print ("Configurations: [");
+  // printf (" %s ", config.path ().stem ().c_str ());
+  std::println (" ]\n");
+}
+
+void
+Commands::printSingleConfig (ConfigTopic config, bool onlytopics)
+{
+  for (auto singleConfig : parse.multi ())
+    {
+      if (config.name.value () != singleConfig.name)
+        continue;
+
+      std::println ("{}:", singleConfig.name);
+      for (auto topic : singleConfig.topics)
+        {
+          if (onlytopics)
+            {
+              std::print ("  {} ", topic.first);
+              continue;
+            }
+
+          if (config.topic.has_value ()
+              && config.topic.value () != topic.first)
+            continue;
+
+          std::println (" + {}", topic.first);
+
+          for (auto project : topic.second)
+            printProjectInfo (project);
+        }
+    }
 }

@@ -1,6 +1,7 @@
 image: registry.gitlab.com/easbarba/onur-cpp:0.2.0
 
 stages:
+  - build
   - test
 
 workflow:
@@ -9,7 +10,21 @@ workflow:
       when: never
     - if: $CI_COMMIT_BRANCH == 'main'
 
-Integration Tests:
+.build_template: &build_definition
+  stage: build
+  script:
+    - cmake -B build -S .
+    - cmake --build build
+
+build:linux:
+  <<: *build_definition
+  artifacts:
+    paths:
+      - build/
+
+test:
   stage: test
   script:
-    - meson test -C /home/easbarba/app/build
+    - ./build/tests/onur_tests
+  dependencies:
+    - build:linux

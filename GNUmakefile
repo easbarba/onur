@@ -26,18 +26,30 @@ CONTAINER_IMAGE := registry.gitlab.com/${USER}/${NAME}:${VERSION}
 # ------------------------------------ TASKS
 
 .PHONY: all
-all:
+all: cmake.all
+
+.PHONY: dev
+dev: cmake.dev
+
+.PHONY: meson.all
+meson.all:
 	CC=g++ meson setup $(BUILDDIR) --wipe
 	CC=g++ meson compile -C $(BUILDDIR)
 
-.PHONY: dev
-dev:
+
+.PHONY: meson.dev
+meson.dev:
 	CC=g++ meson setup $(BUILDDIR)
 	CC=g++ meson compile -C $(BUILDDIR)
 
-.PHONY: cmake
-cmake:
-	cmake -B ${BUILDDIR} -S .
+.PHONY: cmake.all
+cmake.all: clean
+	cmake -S . -B ${BUILDDIR} -D CMAKE_BUILD_TYPE=Release
+	cmake --build ${BUILDDIR}
+
+.PHONY: cmake.dev
+cmake.dev:
+	cmake -S . -B ${BUILDDIR} -D CMAKE_BUILD_TYPE=Debug
 	cmake --build ${BUILDDIR}
 
 .PHONY: clean

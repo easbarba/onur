@@ -14,3 +14,10 @@
  */
 
 #include <catch2/catch_test_macros.hpp>
+
+// TEST_CASE ("Addition works correctly", "[add]")
+// {
+// Globals globals;
+// REQUIRE (globals.homeDir == "/home/easbarba");
+// REQUIRE (2 == 2);
+// }

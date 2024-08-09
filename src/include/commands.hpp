@@ -15,11 +15,20 @@
 
 #pragma once
 
+#include <optional>
+#include <string>
+
 #include "actions.hpp"
+#include "cli.hpp"
 #include "globals.hpp"
 #include "parse.hpp"
-#include "project.hpp"
 
+struct ConfigTopic
+{
+  std::optional<std::string> name;
+  std::optional<std::string> topic;
+  bool dot{ false };
+};
 class Commands
 {
 public:
@@ -29,6 +38,9 @@ public:
   Actions actions;
   Parse parse;
 
-  auto grab (void) -> void;
+  auto grab (std::optional<std::string> name) -> void;
   auto backup (void) -> void;
+  auto printSingleConfig (ConfigTopic config, bool onlytopics = false) -> void;
+  auto config (std::string name, ConfigEntries edit) -> void;
+  auto configTopicNew (std::string &name) -> ConfigTopic;
 };

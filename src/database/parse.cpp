@@ -17,10 +17,11 @@
 #include <filesystem>
 #include <fstream>
 #include <list>
+#include <nlohmann/json.hpp>
+#include <print>
 #include <string>
 
-#include <nlohmann/json.hpp>
-
+#include "../include/cli.hpp"
 #include "../include/konfig.hpp"
 #include "../include/parse.hpp"
 #include "../include/project.hpp"
@@ -52,29 +53,29 @@ auto
 Parse::single (path filepath) -> Konfig
 {
   Konfig result;
-  map<string, list<Project> > subtopiks;
+  map<string, list<Project>> _topics;
 
   auto configParsed = parse_file (contents_of (filepath));
-  result.topic = { filepath.stem () };
+  result.name = { filepath.stem () };
 
-  for (auto &[subtopic, subtopics] : configParsed.items ())
+  for (auto &[topic, topics] : configParsed.items ())
     {
       list<Project> projects;
-      for (auto projekt : subtopics)
+      for (auto project : topics)
         {
           string branch{ "master" };
-          if (!projekt["branch"].is_null ())
-            branch = projekt["branch"];
+          if (!project["branch"].is_null ())
+            branch = project["branch"];
 
-          auto pkt{ Project (projekt["name"], projekt["url"], branch) };
+          auto pkt{ Project (project["name"], project["url"], branch) };
 
           projects.push_back (pkt);
         }
 
-      subtopiks[subtopic] = { projects };
+      _topics[topic] = { projects };
     }
 
-  result.subtopics = { subtopiks };
+  result.topics = { _topics };
   return result;
 }
 
@@ -89,4 +90,49 @@ Parse::contents_of (string path_to_file) -> string
 {
   ifstream file (path_to_file);
   return { istreambuf_iterator<char> (file), istreambuf_iterator<char>{} };
+}
+
+auto
+Parse::exist (std::string name) -> bool
+{
+  for (auto config : multi ())
+    if (config.name == name)
+      return true;
+
+  // std::for_each (multi ().begin (), multi ().end (),
+  //                [name, &result] (Konfig config) {
+  //                  std::println ("MEH");
+  //                  result = { config.name == name };
+  //                  std::println ("FOOL");
+  //                });
+
+  return false;
+}
+
+// Overload the to_json function for automatic conversion
+void
+to_json (nlohmann::json &j, const Konfig &k)
+{
+  j = k.to_json ();
+}
+
+auto
+Parse::save (std::string name, std::string topic,
+             ConfigEntries entries) -> void
+{
+  // if (entries.name || entries.url.has_value () || !entries.branch.empty ())
+  //   {
+  //     std::println ("Either name or url of project are missing. Exiting!");
+  //     return;
+  //   }
+
+  Project project{ entries };
+
+  std::map<std::string, std::list<Project>> topics;
+  topics[topic] = { entries };
+
+  Konfig konfig{ name, topics };
+  nlohmann::json j = konfig;
+
+  std::println ("Saving config with name {} as \n{}", konfig.name, j.dump ());
 }

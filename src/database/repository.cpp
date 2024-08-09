@@ -32,8 +32,6 @@ Repository::allConfigs (void) -> list<path>
   list<path> result;
   Globals globals;
 
-  printf (" Configurations: [");
-
   for (auto config : directory_iterator (globals.onurDir))
     {
       if (config.path ().extension () != ".json")
@@ -46,10 +44,8 @@ Repository::allConfigs (void) -> list<path>
       if (file.peek () == std::ifstream::traits_type::eof ())
         continue;
 
-      printf (" %s ", config.path ().stem ().c_str ());
       result.push_back (config);
     }
 
-  printf (" ]\n");
   return result;
 }

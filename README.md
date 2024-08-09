@@ -22,12 +22,30 @@ Easily manage multiple FLOSS repositories.
 | [ruby](https://gitlab.com/easbarba/onur-ruby)
 
 
-
 ## Usage
 
 ```shell
-onur grab
-onur backup nuxt awesomewm gitignore
+# grab all projects
+onur grab 
+
+# grab only the c projects
+onur grab c 
+
+# list the cpp configuration file
+onur config cpp 
+
+# list topics of haskell
+onur config haskell.
+
+# list only the projects on misc topic of lisp
+onur config lisp.misc 
+
+# add a new configuration with theses entries in the topic misc of c
+onur config c.misc cli11 https://github.com/cliutils/cli11 main 
+
+# back up these projects as tar.gz
+onur backup ecmascript.nuxt lua.awesomewm misc.gitignore 
+
 onur --help
 ```
 
@@ -90,7 +108,7 @@ depth = 1
 
 ## Installation
 
-`onur` requires a c++ 20 compiler and `meson` to install, locally at `$HOME/.local/bin`, easily with : `make all install`. 
+`onur` requires a c++ 23 compiler and `meson` or `cmake`: `make all`. 
 
 ## Development
 

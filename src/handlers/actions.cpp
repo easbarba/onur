@@ -30,7 +30,7 @@ auto
 Actions::klone (Project project, path dirpath) -> void
 {
   auto finalCommand{ format (
-      "git clone --single-branch --depth=1 --quiet {} {}", project.url,
+      "git clone --single-branch --depth=1 --quiet -- {} {}", project.Url (),
       dirpath.string ()) };
   system (finalCommand.c_str ());
 }
@@ -38,6 +38,7 @@ Actions::klone (Project project, path dirpath) -> void
 auto
 Actions::pull (path dirpath) -> void
 {
-  auto finalCommand{ format ("git -C {}  pull --quiet", dirpath.string ()) };
+  auto finalCommand{ format ("git -C {}  pull --force --rebase --quiet",
+                             dirpath.string ()) };
   system (finalCommand.c_str ());
 }

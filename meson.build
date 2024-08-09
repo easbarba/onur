@@ -16,7 +16,7 @@ project(
     'cpp',
     license: 'GNU GPL version 3',
     version: '0.2.0',
-    default_options: [ 'cpp_std=c++20', 'warning_level=3' ],
+    default_options: [ 'cpp_std=c++23', 'warning_level=3' ],
     meson_version: '>=1.4.0',
 )
 

@@ -11,13 +11,26 @@
 # You should have received a copy of the GNU General Public License
 # along with Onur. If not, see <https://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.20.0)
-project(onur)
+# Include FetchContent module
+include(FetchContent)
 
-# Set C++ standard
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+# Fetch Catch2
+FetchContent_Declare(
+  catch2
+  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+  GIT_TAG v3.6.0
+)
+FetchContent_MakeAvailable(catch2)
 
-# Add subdirectories
-add_subdirectory(src)
-add_subdirectory(tests)
+# Add test executable
+add_executable(onur_tests test_main.cpp test_globals.cpp)
+
+# Link Catch2
+target_link_libraries(onur_tests PRIVATE Catch2::Catch2WithMain)
+
+# Include the src/include directory
+target_include_directories(onur_tests PRIVATE ${PROJECT_SOURCE_DIR}/src/include)
+
+# Add CTest support
+enable_testing()
+add_test(NAME MyTests COMMAND onur_tests)

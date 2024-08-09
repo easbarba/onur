@@ -15,28 +15,12 @@
 
 #pragma once
 
-#include <list>
+#include <optional>
 #include <string>
 
-#include <nlohmann/json.hpp>
-
-#include "cli.hpp"
-#include "konfig.hpp"
-#include "repository.hpp"
-
-class Parse
+struct ConfigEntries
 {
-public:
-  Parse ();
-
-  Repository repository;
-
-  auto multi (void) -> std::list<Konfig>;
-  auto single (std::filesystem::path filepath) -> Konfig;
-  auto parse_file (std::string jsonString) -> nlohmann::basic_json<>;
-  auto contents_of (std::string path_to_file) -> std::string;
-  auto exist (std::string name) -> bool;
-  auto dump () -> void;
-  auto save (std::string name, std::string topic,
-             ConfigEntries entries) -> void;
+  std::optional<std::string> name;
+  std::optional<std::string> url;
+  std::string branch{ "master" };
 };

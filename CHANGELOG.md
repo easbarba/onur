@@ -15,6 +15,10 @@ along with Onur. If not, see <https://www.gnu.org/licenses/>.
 
 # CHANGELOG
 
+## 0.3.0
+
+- feat: add action edit/view configurations
+
 ## 0.2.0
 
 - feat: refactor, more tests and improve cli ui

@@ -17,11 +17,14 @@ along with Onur. If not, see <https://www.gnu.org/licenses/>.
 
 ### High
 
-- verbose
+- flag: --verbose
 - validation of repository links 
-- actions: --filter rust
+- actions: --filter rust:misc
 - actions: --only rust,haskel,commonlisp
 - actions: --exclude rust,haskel,commonlisp
+
+### Mid
+- actions:  onur config c.misc foo https://git@gmasd main
 
 ### Low
 
